@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "fastapi-on-cloud-run"
+version = "0.1.0"
+description = ""
+authors = ["kamillle <kamijima.yuji@mfkessai.co.jp>"]
+readme = "README.md"
+packages = [{include = "cloud_run"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+uvicorn = "^0.18.3"
+fastapi = "^0.85.1"
+opentelemetry-api = "^1.13.0"
+opentelemetry-sdk = "^1.13.0"
+opentelemetry-exporter-gcp-trace = "^1.3.0"
+opentelemetry-propagator-gcp = "^1.3.0"
+opentelemetry-instrumentation-fastapi = "^0.34b0"
+pyyaml = "^6.0"
+opentelemetry-instrumentation-logging = "^0.34b0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
