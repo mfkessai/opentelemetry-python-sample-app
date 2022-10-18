@@ -1,0 +1,31 @@
+# Schema detail doc
+# https://docs.python.org/3/library/logging.config.html#dictionary-schema-details
+version: 1
+disable_existing_loggers: False
+
+formatters:
+  mainFormatter:
+    # logging.googleapis.com/trace, logging.googleapis.com/spanId に trace id, span idを埋めることで
+    # Cloud Trace でトレーシングとロギング情報が紐付いて表示されるようになる
+    # https://cloud.google.com/logging/docs/structured-logging#special-payload-fields
+    format: '{"service_name": "flask-on-cloud-functions", "timestamp": "%(asctime)s", "severity": "%(levelname)s", "message": "%(message)s", "additional": %(additional)s, "environment": "%(environment)s", "logger": "%(name)s", "logging.googleapis.com/trace": "projects/{YOUR_PROJECT}/traces/%(otelTraceID)s", "logging.googleapis.com/spanId": "%(otelSpanID)s"}'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+
+handlers:
+  main:
+    # stdout に出力したいので StreamHandler を使う
+    # https://docs.python.org/3/library/logging.handlers.html
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: mainFormatter
+    stream: ext://sys.stdout
+
+loggers:
+  mainLogger:
+    level: DEBUG
+    handlers: [main]
+    propagate: no
+
+root:
+  level: INFO
+  handlers: []
