@@ -69,8 +69,8 @@ class MainLogger:
         try:
             extra = {"additional": json.dumps(additional, default=__serializer_for_fallback)}
         except TypeError as error:
-            # 本番でない場合は気づきやすいように例外とし、本番の場合はシリアライズをスキップする
-            # textPayloadにログが載ってしまうがアプリケーションが死ぬより良い
+            # 本番でない場合は気づきやすいように例外とする
+            # 本番の場合はシリアライズをスキップする。ログがtextPayloadに載ってしまうがアプリケーションが死ぬより良い
             if env_name_context.get() != "production":
                 raise error
 
@@ -83,13 +83,13 @@ class MainLogger:
 main_logger = MainLogger()
 """Export Mainlogger instance as usual logger
 Usage:
-from custom_loggers import main_logger as logger
+    from custom_loggers import main_logger as logger
 
-logger.info("logging message")
-# You can pass extra data
-logger.info(
-    "another logging message",
-    additional={"key1": 1, "key2": {"company": "sample"}, "key3": [1, 2, 3]}
-)
-logger.info("another logging message", additional="Yo!!")
+    logger.info("logging message")
+    # You can pass extra data
+    logger.info(
+        "another logging message",
+        additional={"key1": 1, "key2": {"company": "sample"}, "key3": [1, 2, 3]}
+    )
+    logger.info("another logging message", additional="Yo!!")
 """

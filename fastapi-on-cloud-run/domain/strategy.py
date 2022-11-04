@@ -1,4 +1,4 @@
-from trace import add_trace_span
+from tracing import add_trace_span
 from custom_loggers import main_logger
 
 
