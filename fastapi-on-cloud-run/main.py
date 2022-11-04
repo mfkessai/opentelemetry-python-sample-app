@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 
 from domain.strategy import Strategy
-from trace import init_trace, add_trace_span
+from tracing import init_trace, add_trace_span
 from custom_loggers import (
     main_logger,
     env_name_context,
