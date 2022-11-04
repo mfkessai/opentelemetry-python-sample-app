@@ -4,8 +4,7 @@ from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from tracing import init_trace, add_trace_span, get_tracer
 from custom_loggers import main_logger as logger, env_name_context
 
-# Need to change `staging` or `production` to add spans
-env = "development"
+env = "production"
 init_trace(environment=env)
 env_name_context.set(env)
 app = Flask(__name__)

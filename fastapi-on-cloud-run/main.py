@@ -8,8 +8,7 @@ from custom_loggers import (
     env_name_context,
 )
 
-# Need to change `staging` or `production` to add spans
-env = "development"
+env = "production"
 env_name_context.set(env)
 init_trace(environment=env)
 
