@@ -1,5 +1,6 @@
-from flask import Flask, Request, request
+from flask import Flask, Request, request, current_app
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 
 from tracing import init_trace, add_trace_span, get_tracer
 from custom_loggers import main_logger as logger, env_name_context
@@ -8,6 +9,8 @@ env = "production"
 init_trace(environment=env)
 env_name_context.set(env)
 app = Flask(__name__)
+with current_app.app_context():
+    current_app.wsgi_app = OpenTelemetryMiddleware(current_app.wsgi_app)
 FlaskInstrumentor().instrument_app(app)
 
 
