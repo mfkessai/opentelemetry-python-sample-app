@@ -89,8 +89,24 @@ class TraceContextManager:
         return trace.get_current_span().get_span_context()
 
     @classmethod
+    def get_trace_context(cls):
+        """
+        分散トレーシングするにはアプリケーション間で同じtrace contextを引き回す必要がある
+        分散トレーシングするもっと楽な方法があるかもだけど、サンプルアプリケーションで動作確認が取れたこの方法で一旦導入している
+        X-Cloud-Trace-Context のフォーマットは TRACE_ID/SPAN_ID;o=TRACE_TRUE
+        https://cloud.google.com/trace/docs/setup#force-trace
+        """
+        return f"{cls.get_trace_id()}/{cls.__get_span_id()}"
+
+    @classmethod
     def get_trace_id(cls) -> str:
-        # trace idはOpenTelemetryの仕様上、128 ビットの番号を表す 32 文字の 16 進数値だが
-        # PythonのOpenTelemetryのpackage内だとintで管理されているので
-        # パッケージ側のフォーマット関数をかませる必要がある
+        """
+        trace idはOpenTelemetryの仕様上、128 ビットの番号を表す 32 文字の 16 進数値だが
+        PythonのOpenTelemetryのpackage内だとintで管理されているので
+        パッケージ側のフォーマット関数をかませる必要がある
+        """
         return trace.format_trace_id(cls.__span_context().trace_id)
+
+    @classmethod
+    def __get_span_id(cls) -> int:
+        return cls.__span_context().span_id
